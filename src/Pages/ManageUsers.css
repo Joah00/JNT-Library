@@ -1,0 +1,8 @@
+.addBtn {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    width: 128%;
+    margin-top: 30px;
+}

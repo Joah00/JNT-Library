@@ -1,23 +1,26 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import BorrowedBooks from './Pages/BorrowedBooks';
+import ManageBooks from './Pages/ManageBooks';
+import ManageBranches from './Pages/ManageBranches';
+import ManageUsers from './Pages/ManageUsers';
+import OverdueBorrowers from './Pages/OverdueBorrowers';
+import MainLayout from './Layouts/MainLayout';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <>
+      <Routes>
+      <Route path="/" element={<Navigate to="/overdueBorrowers" />} />
+        <Route path="/overdueBorrowers" element={<MainLayout><OverdueBorrowers/></MainLayout>} />
+        <Route path="/borrowedBooks" element={<MainLayout><BorrowedBooks/></MainLayout>} />
+        <Route path="/manageBooks" element={<MainLayout><ManageBooks/></MainLayout>} />
+        <Route path="/manageUsers" element={<MainLayout><ManageUsers/></MainLayout>} />
+        <Route path="/manageBranches" element={<MainLayout><ManageBranches/></MainLayout>} />
+      </Routes>
+    </>
     </div>
   );
 }

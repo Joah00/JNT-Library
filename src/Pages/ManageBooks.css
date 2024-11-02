@@ -1,0 +1,15 @@
+.content {
+    margin-bottom: 25px;
+}
+
+.addBtn {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    width: 128%;
+}
+
+.popup-container p{
+    font-size: 20px;
+}

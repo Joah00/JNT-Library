@@ -1,0 +1,48 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  background-color: black;
+  color: white;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 65px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 12.2%;
+  z-index: 100;
+  font-size: 13px;
+}
+
+.content-area {
+  margin-left: 125px;
+  max-width: calc(100% - 280px); 
+  max-height: calc(100% - 200px); 
+  position: relative;
+}
+
+.Sidebar {
+  top: 60px;
+}
+
+.content-area h2 {
+  color: black;
+  font-size: 35px; 
+  margin-top: 2px;
+  width: 100%;
+  text-align: left;
+  margin-left: 30px; 
+}
