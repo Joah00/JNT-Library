@@ -7,9 +7,9 @@ import React from 'react';
 
 export const SidebarData = [
     {
-        title: "Overdue Borrowers",
+        title: "View Books",
         icon: <AccessTimeIcon/>,
-        link: "/overdueBorrowers"
+        link: "/viewBooks"
     },
     {
         title: "Borrowed Books",
@@ -17,18 +17,23 @@ export const SidebarData = [
         link: "/borrowedBooks"
     },
     {
-        title: "Manage Books",
+        title: "Manage Accounts",
         icon: <BackHandIcon/>,
+        link: "/manageAccounts"
+    },
+    {
+        title: "Manage Books",
+        icon: <ManageAccountsIcon/>,
         link: "/manageBooks"
     },
     {
-        title: "Manage Users",
-        icon: <ManageAccountsIcon/>,
-        link: "/manageUsers"
+        title: "Manage Borrowed Books",
+        icon: <ApartmentIcon/>,
+        link: "/manageBorrowedBooks"
     },
     {
-        title: "Manage Branches",
-        icon: <ApartmentIcon/>,
-        link: "/manageBranches"
-    }
+        title: "Logout",
+        icon: <AccessTimeIcon/>,
+        link: "/loginPage"
+    },
 ]

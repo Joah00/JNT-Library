@@ -6,9 +6,9 @@ import ButtonComponent from "../Components/ButtonComponent";
 import PopupComponent from "../Components/PopupComponent";
 import SnackbarComponent from "../Components/SnackbarComponent";
 import PopupComponentWFields from "../Components/PopupComponentWFields";
-import "./ManageUsers.css";
+import "./ManageAccounts.css";
 
-function ManageUsers() {
+function ManageAccounts() {
   const columns = [
     { id: "id", label: "ID" },
     { id: "name", label: "Name" },
@@ -476,4 +476,4 @@ function ManageUsers() {
   );
 }
 
-export default ManageUsers;
+export default ManageAccounts;

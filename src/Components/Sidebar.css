@@ -32,7 +32,7 @@ body {
   align-items: center;
   transition: background-color 0.3s, color 0.3s;
   cursor: pointer;
-  width: 90%;
+  width: 84%;
 }
 
 .SidebarList .row {

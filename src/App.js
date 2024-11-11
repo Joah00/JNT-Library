@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from './Pages/LoginPage';
+import ViewBooks from './Pages/ViewBooks';
 import BorrowedBooks from './Pages/BorrowedBooks';
+import ManageAccounts from './Pages/ManageAccounts';
 import ManageBooks from './Pages/ManageBooks';
-import ManageBranches from './Pages/ManageBranches';
-import ManageUsers from './Pages/ManageUsers';
-import OverdueBorrowers from './Pages/OverdueBorrowers';
+import ManageBorrowedBooks from './Pages/ManageBorrowedBooks';
 import MainLayout from './Layouts/MainLayout';
 
 function App() {
@@ -13,12 +14,13 @@ function App() {
     <div className="App">
       <>
       <Routes>
-      <Route path="/" element={<Navigate to="/overdueBorrowers" />} />
-        <Route path="/overdueBorrowers" element={<MainLayout><OverdueBorrowers/></MainLayout>} />
+        <Route path="/" element={<Navigate to="/loginPage" />} />
+        <Route path="/loginPage" element={<LoginPage/>} />
+        <Route path="/viewBooks" element={<MainLayout><ViewBooks/></MainLayout>} />
         <Route path="/borrowedBooks" element={<MainLayout><BorrowedBooks/></MainLayout>} />
+        <Route path="/manageAccounts" element={<MainLayout><ManageAccounts/></MainLayout>} />
         <Route path="/manageBooks" element={<MainLayout><ManageBooks/></MainLayout>} />
-        <Route path="/manageUsers" element={<MainLayout><ManageUsers/></MainLayout>} />
-        <Route path="/manageBranches" element={<MainLayout><ManageBranches/></MainLayout>} />
+        <Route path="/manageBorrowedBooks" element={<MainLayout><ManageBorrowedBooks/></MainLayout>} />
       </Routes>
     </>
     </div>

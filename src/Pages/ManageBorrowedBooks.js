@@ -6,9 +6,9 @@ import ButtonComponent from '../Components/ButtonComponent';
 import PopupComponent from "../Components/PopupComponent";
 import SnackbarComponent from "../Components/SnackbarComponent";
 import PopupComponentWFields from "../Components/PopupComponentWFields";
-import "./ManageBranches.css";
+import "./ManageBorrowedBooks.css";
 
-function ManageBranches() {
+function ManageBorrowedBooks() {
   const initialData = [
     { id: 1, branchName: 'Central Library', contactNo: '1234567890', Location: '101 Main St', actions: [<ButtonComponent key="update1" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(1)} />, <ButtonComponent key="delete1" buttonName="Delete" onClick={() => handleOpenDelete(1)} />] },
     { id: 2, branchName: 'Westside Branch', contactNo: '1234567891', Location: '202 West St', actions: [<ButtonComponent key="update2" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(2)} />, <ButtonComponent key="delete2" buttonName="Delete" onClick={() => handleOpenDelete(2)} />] },
@@ -192,4 +192,4 @@ function ManageBranches() {
   );
 }
 
-export default ManageBranches;
+export default ManageBorrowedBooks;
