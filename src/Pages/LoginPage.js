@@ -39,7 +39,7 @@ const LoginPage = () => {
         }}
       >
         <Typography variant="h4" component="h1" align="center" gutterBottom style={{ color: '#000' }}>
-          J-Library Login
+          JNT Library Login
         </Typography>
         <form onSubmit={handleLogin} style={{ width: '100%' }}>
           <TextField

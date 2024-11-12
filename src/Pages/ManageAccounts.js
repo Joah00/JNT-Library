@@ -447,7 +447,8 @@ function ManageAccounts() {
           fields={[
             { id: "name", label: "Name" },
             { id: "email", label: "Email" },
-            { id: "username", label: "Username" }
+            { id: "username", label: "Username" },
+            { id: "password", label: "Password" }
           ]}
         />
 

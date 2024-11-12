@@ -6,7 +6,7 @@ function MainLayout({children, header}) {
   return (
     <div className="main-layout">
       <header className="header">
-        <h1>J-Library</h1>
+        <h1>JNT Library</h1>
       </header>
     
       <SideBar/>
