@@ -1,193 +1,320 @@
 import React, { useState } from "react";
 import MainLayout from "../Layouts/MainLayout";
 import SearchBar from "../Components/SearchBar";
-import TableComponent from '../Components/TableComponent';
-import ButtonComponent from '../Components/ButtonComponent';
+import TableComponent from "../Components/TableComponent";
+import ButtonComponent from "../Components/ButtonComponent";
 import PopupComponent from "../Components/PopupComponent";
-import SnackbarComponent from "../Components/SnackbarComponent";
-import PopupComponentWFields from "../Components/PopupComponentWFields";
+import { TextField, IconButton, Box, Typography } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import "./ManageBorrowedBooks.css";
 
 function ManageBorrowedBooks() {
-  const initialData = [
-    { id: 1, branchName: 'Central Library', contactNo: '1234567890', Location: '101 Main St', actions: [<ButtonComponent key="update1" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(1)} />, <ButtonComponent key="delete1" buttonName="Delete" onClick={() => handleOpenDelete(1)} />] },
-    { id: 2, branchName: 'Westside Branch', contactNo: '1234567891', Location: '202 West St', actions: [<ButtonComponent key="update2" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(2)} />, <ButtonComponent key="delete2" buttonName="Delete" onClick={() => handleOpenDelete(2)} />] },
-    { id: 3, branchName: 'Eastside Branch', contactNo: '1234567892', Location: '303 East Ave', actions: [<ButtonComponent key="update3" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(3)} />, <ButtonComponent key="delete3" buttonName="Delete" onClick={() => handleOpenDelete(3)} />] },
-    { id: 4, branchName: 'North Branch', contactNo: '1234567893', Location: '404 North Rd', actions: [<ButtonComponent key="update4" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(4)} />, <ButtonComponent key="delete4" buttonName="Delete" onClick={() => handleOpenDelete(4)} />] },
-    { id: 5, branchName: 'South Branch', contactNo: '1234567894', Location: '505 South Dr', actions: [<ButtonComponent key="update5" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(5)} />, <ButtonComponent key="delete5" buttonName="Delete" onClick={() => handleOpenDelete(5)} />] },
-    { id: 6, branchName: 'Riverdale Library', contactNo: '1234567895', Location: '606 River Rd', actions: [<ButtonComponent key="update6" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(6)} />, <ButtonComponent key="delete6" buttonName="Delete" onClick={() => handleOpenDelete(6)} />] },
-    { id: 7, branchName: 'Lakeside Library', contactNo: '1234567896', Location: '707 Lake Ln', actions: [<ButtonComponent key="update7" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(7)} />, <ButtonComponent key="delete7" buttonName="Delete" onClick={() => handleOpenDelete(7)} />] },
-    { id: 8, branchName: 'Mountain View Library', contactNo: '1234567897', Location: '808 Mountain Pl', actions: [<ButtonComponent key="update8" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(8)} />, <ButtonComponent key="delete8" buttonName="Delete" onClick={() => handleOpenDelete(8)} />] },
-    { id: 9, branchName: 'Valley Forge Library', contactNo: '1234567898', Location: '909 Valley Rd', actions: [<ButtonComponent key="update9" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(9)} />, <ButtonComponent key="delete9" buttonName="Delete" onClick={() => handleOpenDelete(9)} />] },
-    { id: 10, branchName: 'Hilltop Library', contactNo: '1234567899', Location: '1010 Hill St', actions: [<ButtonComponent key="update10" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(10)} />, <ButtonComponent key="delete10" buttonName="Delete" onClick={() => handleOpenDelete(10)} />] },
-    { id: 11, branchName: 'Seaside Library', contactNo: '1234567810', Location: '1111 Sea Blvd', actions: [<ButtonComponent key="update11" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(11)} />, <ButtonComponent key="delete11" buttonName="Delete" onClick={() => handleOpenDelete(11)} />] },
-    { id: 12, branchName: 'Forest Grove Library', contactNo: '1234567811', Location: '1212 Forest Ln', actions: [<ButtonComponent key="update12" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(12)} />, <ButtonComponent key="delete12" buttonName="Delete" onClick={() => handleOpenDelete(12)} />] },
-    { id: 13, branchName: 'Desert Sands Library', contactNo: '1234567812', Location: '1313 Desert Dr', actions: [<ButtonComponent key="update13" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(13)} />, <ButtonComponent key="delete13" buttonName="Delete" onClick={() => handleOpenDelete(13)} />] },
-    { id: 14, branchName: 'City Center Library', contactNo: '1234567813', Location: '1414 Center St', actions: [<ButtonComponent key="update14" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(14)} />, <ButtonComponent key="delete14" buttonName="Delete" onClick={() => handleOpenDelete(14)} />] },
-    { id: 15, branchName: 'Suburban Library', contactNo: '1234567814', Location: '1515 Suburb Ln', actions: [<ButtonComponent key="update15" buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(15)} />, <ButtonComponent key="delete15" buttonName="Delete" onClick={() => handleOpenDelete(15)} />] }
+  const handleClose = () => setIsOpen(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [bookDetails, setBookDetails] = useState({});
+  const [username, setUsername] = useState("");
+  const [books, setBooks] = useState([
+    { bookName: "", author: "", quantity: 1 },
+  ]);
+
+  const handleOpen = (details) => {
+    setIsOpen(true);
+    setBookDetails(details);
+  };
+
+  const handleAddBookRow = () => {
+    setBooks([...books, { bookName: "", author: "", quantity: 1 }]);
+  };
+
+  const handleRemoveBookRow = (index) => {
+    if (books.length > 1) {
+      setBooks(books.filter((_, i) => i !== index));
+    }
+  };
+
+  const handleBookChange = (index, field, value) => {
+    const updatedBooks = books.map((book, i) => {
+      if (i === index) {
+        if (field === "quantity" && value < 0) {
+          value = 0;
+        }
+        return { ...book, [field]: value };
+      }
+      return book;
+    });
+    setBooks(updatedBooks);
+  };
+
+  const columns = [
+    { id: "id", label: "ID" },
+    { id: "userID", label: "User ID" },
+    { id: "name", label: "Name" },
+    { id: "dueDate", label: "Due Date" },
+    { id: "bookName", label: "Book Name" },
+    { id: "action", label: "Action" },
   ];
 
-  const [branches, setBranches] = useState(initialData);
+  const initialData = [
+    {
+      id: 1,
+      name: "Alice Johnson",
+      userID: "001",
+      bookName: "The Great Gatsby",
+      dueDate: "2023-11-01",
+      actions: [
+        <ButtonComponent
+          buttonName="View Book Details"
+          onClick={() =>
+            handleOpen({
+              bookName: "The Great Gatsby",
+              language: "English",
+              type: "Fiction",
+            })
+          }
+        />,
+      ],
+    },
+    {
+      id: 2,
+      name: "Bob Smith",
+      userID: "002",
+      bookName: "1984",
+      dueDate: "2023-11-05",
+      actions: [
+        <ButtonComponent
+          buttonName="View Book Details"
+          onClick={() =>
+            handleOpen({
+              bookName: "1984",
+              language: "English",
+              type: "Dystopian",
+            })
+          }
+        />,
+      ],
+    },
+    {
+      id: 3,
+      name: "Clara Oswald",
+      userID: "003",
+      bookName: "To Kill a Mockingbird",
+      dueDate: "2023-11-08",
+      actions: [
+        <ButtonComponent
+          buttonName="View Book Details"
+          onClick={() =>
+            handleOpen({
+              bookName: "To Kill a Mockingbird",
+              language: "English",
+              type: "Fiction",
+            })
+          }
+        />,
+      ],
+    },
+    {
+      id: 4,
+      name: "David Tennant",
+      userID: "004",
+      bookName: "Pride and Prejudice",
+      dueDate: "2023-11-10",
+      actions: [
+        <ButtonComponent
+          buttonName="View Book Details"
+          onClick={() =>
+            handleOpen({
+              bookName: "Pride and Prejudice",
+              language: "English",
+              type: "Romance",
+            })
+          }
+        />,
+      ],
+    },
+    {
+      id: 5,
+      name: "Ella Fitzgerald",
+      userID: "005",
+      amount: "$30.00",
+      bookName: "The Catcher in the Rye",
+      dueDate: "2023-11-12",
+      actions: [
+        <ButtonComponent
+          buttonName="View Book Details"
+          onClick={() =>
+            handleOpen({
+              bookName: "The Catcher in the Rye",
+              language: "English",
+              type: "Fiction",
+            })
+          }
+        />,
+      ],
+    },
+  ];
+
   const [filteredData, setFilteredData] = useState(initialData);
-  const [branchDetails, setBranchDetails] = useState({});
-  const [isOpenUpdate, setIsOpenUpdate] = useState(false);
-  const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const [isOpenAdd, setIsOpenAdd] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackBarMessage, setSnackbarMessage] = useState({});
-  
-
-  const handleSnackbarOpen = (message) => {
-    setSnackbarMessage(message);
-    setSnackbarOpen(true);
-  };
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
-  const handleOpenAddBranch = () => {
-    setBranchDetails({
-      id: branches.length + 1,
-      branchName: "",
-      contactNo: "",
-      Location: ""
-    });
-    setIsOpenAdd(true);
-  };
-
-  const handleAddNewBranch = (newBranchDetails) => {
-    const newBranch = {
-      ...newBranchDetails,
-      actions: createActions(newBranchDetails.id)
-    };
-    setBranches([...branches, newBranch]);
-    setFilteredData([...branches, newBranch]);
-    setIsOpenAdd(false);
-    handleSnackbarOpen("New branch added successfully");
-  };
-
-  const handleOpenUpdate = (id) => {
-    const branch = branches.find(b => b.id === id);
-    setBranchDetails(branch);
-    setIsOpenUpdate(true);
-  };
-
-  const handleUpdateBranch = (updatedBranchDetails) => {
-    const updatedBranches = branches.map(branch =>
-      branch.id === updatedBranchDetails.id ? { ...branch, ...updatedBranchDetails } : branch
-    );
-    setBranches(updatedBranches);
-    setFilteredData(updatedBranches);
-    setIsOpenUpdate(false);
-    handleSnackbarOpen("Branch updated successfully");
-  };
-
-  const handleOpenDelete = (id) => {
-    const branch = branches.find(b => b.id === id);
-    setBranchDetails(branch);
-    setIsOpenDelete(true);
-  };
-
-  const handleDeleteBranch = () => {
-    const updatedBranches = branches.filter(branch => branch.id !== branchDetails.id);
-    setBranches(updatedBranches);
-    setFilteredData(updatedBranches);
-    setIsOpenDelete(false);
-    handleSnackbarOpen("Branch deleted successfully");
-  };
 
   const handleSearchChange = (event) => {
-    const value = event.target.value.toLowerCase();
-    const filtered = branches.filter(branch =>
-      branch.id.toString().includes(value) ||
-      branch.branchName.toLowerCase().includes(value) ||
-      branch.contactNo.includes(value) ||
-      branch.Location.toLowerCase().includes(value)
+    const value = event.target.value;
+    filterData(value);
+  };
+
+  const filterData = (value) => {
+    const lowercasedValue = value.toLowerCase();
+    const filtered = initialData.filter(
+      (item) =>
+        item.id.toString().includes(lowercasedValue) ||
+        item.userID.toLowerCase().includes(lowercasedValue)
     );
     setFilteredData(filtered);
   };
 
-  const createActions = (id) => [
-    <ButtonComponent key={`update${id}`} buttonName="Update" marginRight="7px" onClick={() => handleOpenUpdate(id)} />,
-    <ButtonComponent key={`delete${id}`} buttonName="Delete" onClick={() => handleOpenDelete(id)} />
-  ];
+  const handleReturnBook = () => {
+    // Placeholder for handling the return book functionality
+  };
 
-  const columns = [
-    { id: 'id', label: 'ID' },
-    { id: 'branchName', label: 'Branch Name' },
-    { id: 'contactNo', label: 'Contact No' },
-    { id: 'Location', label: 'Location' },
-    { id: 'action', label: 'Action' }
-  ];
+  const handleBorrowBook = () => {
+    // Placeholder for handling the borrow book functionality
+  };
+
+  const handleClearFields = () => {
+    // Set username to an empty string to clear the input
+    setUsername("");
+
+    // Reset the books array to its initial state with a single empty row
+    setBooks([{ bookName: "", author: "", quantity: 1 }]);
+  };
 
   return (
-    <MainLayout header="Manage Branches">
-      <div className="content">
-        <SearchBar placeholder="Search by ID" onChange={handleSearchChange} />
-        <TableComponent columns={columns} data={filteredData} />
-        <div className="addBtn">
+    <MainLayout header="Manage Borrowed Books">
+      {/* User and Book Input Section */}
+      <Box
+        sx={{
+          backgroundColor: "#e0e0e0",
+          padding: "16px",
+          borderRadius: "8px",
+          marginBottom: "20px",
+          width: "124%",
+          marginLeft: "18px",
+        }}
+      >
+        <Typography variant="h6" sx={{ color: "black" }}>
+          Borrow/Return Book
+        </Typography>
+
+        {/* Username Field */}
+        <TextField
+          label="Username"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+
+        {/* Books Fields */}
+        {books.map((book, index) => (
+          <Box
+            key={index}
+            display="flex"
+            alignItems="center"
+            gap="10px"
+            marginTop="10px"
+          >
+            <TextField
+              label="Book Name"
+              variant="outlined"
+              fullWidth
+              value={book.bookName}
+              onChange={(e) =>
+                handleBookChange(index, "bookName", e.target.value)
+              }
+            />
+            <TextField
+              label="Author"
+              variant="outlined"
+              fullWidth
+              value={book.author}
+              onChange={(e) =>
+                handleBookChange(index, "author", e.target.value)
+              }
+            />
+            <TextField
+              label="Quantity"
+              type="number"
+              variant="outlined"
+              fullWidth
+              value={book.quantity}
+              onChange={(e) =>
+                handleBookChange(index, "quantity", e.target.value)
+              }
+            />
+
+            <IconButton
+              color="primary"
+              onClick={handleAddBookRow}
+              sx={{ marginLeft: "8px" }}
+            >
+              <AddIcon />
+            </IconButton>
+            <IconButton
+              color="secondary"
+              onClick={() => handleRemoveBookRow(index)}
+              disabled={books.length === 1} // Disable if only one row is left
+            >
+              <RemoveIcon />
+            </IconButton>
+          </Box>
+        ))}
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          marginTop="15px"
+        >
           <ButtonComponent
-            buttonName="Add New Branch"
-            buttonWidth="500px"
-            buttonHeight="40px"
+            buttonName="Return Book"
+            buttonWidth="200px"
+            buttonHeight="50px"
+            marginRight="10px"
+            onClick={handleReturnBook}
+          />
+          <ButtonComponent
+            buttonName="Borrow Book"
+            buttonWidth="200px"
+            buttonHeight="50px"
+            marginRight="10px"
+            onClick={handleBorrowBook}
+          />
+          <ButtonComponent
+            buttonName="Clear"
+            buttonWidth="200px"
+            buttonHeight="50px"
+            onClick={handleClearFields}
+          />
+        </Box>
+      </Box>
+
+      <SearchBar placeholder="Search by ID" onChange={handleSearchChange} />
+      <TableComponent columns={columns} data={filteredData}/>
+      <PopupComponent
+        open={isOpen}
+        handleClose={handleClose}
+        title="View Book Details"
+      >
+        <div className="popup-container">
+          Book Name: {bookDetails.bookName} <br />
+          Language: {bookDetails.language} <br />
+          Type: {bookDetails.type} <br /> <br /> <br />
+          <ButtonComponent
+            buttonName="Close"
+            buttonWidth="auto"
             marginRight="center"
-            onClick={handleOpenAddBranch}
+            onClick={handleClose}
           />
         </div>
-
-        <PopupComponentWFields
-          open={isOpenAdd}
-          handleClose={() => setIsOpenAdd(false)}
-          title="Add New Branch"
-          userDetails={branchDetails}
-          button1Name="Cancel"
-          button2Name="Add Branch"
-          button2OnClick={handleAddNewBranch}
-          fields={[
-            { id: "branchName", label: "Branch Name" },
-            { id: "contactNo", label: "Contact No" },
-            { id: "Location", label: "Location" }
-          ]}
-        />
-
-        <PopupComponentWFields
-          open={isOpenUpdate}
-          handleClose={() => setIsOpenUpdate(false)}
-          title="Update Branch"
-          userDetails={branchDetails}
-          button1Name="Cancel"
-          button2Name="Update"
-          button2OnClick={handleUpdateBranch}
-          fields={[
-            { id: "branchName", label: "Branch Name" },
-            { id: "contactNo", label: "Contact No" },
-            { id: "Location", label: "Location" }
-          ]}
-        />
-
-        <PopupComponent
-          open={isOpenDelete}
-          handleClose={() => setIsOpenDelete(false)}
-          title="Delete Confirmation"
-          children={
-            <div className="popup-container">
-              <p>Are you sure you want to delete this branch?</p>
-              <ButtonComponent
-                buttonName="Confirm"
-                buttonWidth="auto"
-                onClick={handleDeleteBranch}
-              />
-            </div>
-          }
-        />
-
-        <SnackbarComponent
-          open={snackbarOpen}
-          handleClose={handleSnackbarClose}
-          message="Operation completed successfully"
-        />
-      </div>
+      </PopupComponent>
     </MainLayout>
   );
 }

@@ -403,7 +403,7 @@ function ManageAccounts() {
   };
 
   return (
-    <MainLayout header="Manage Users">
+    <MainLayout header="Manage Accounts">
       <div className="content">
         <SearchBar
           placeholder="Search by Name, Email, or Username"
@@ -413,7 +413,7 @@ function ManageAccounts() {
 
         <div className="addBtn">
           <ButtonComponent
-            buttonName="Add New User"
+            buttonName="Add New Account"
             buttonWidth="500px"
             buttonHeight="40px"
             marginRight="center"
@@ -424,7 +424,7 @@ function ManageAccounts() {
         <PopupComponentWFields
           open={isOpenAdd}
           handleClose={() => setIsOpenAdd(false)}
-          title="Add New User"
+          title="Add New Account"
           userDetails={userDetails}
           button1Name="Cancel"
           button2Name="Add User"
@@ -439,7 +439,7 @@ function ManageAccounts() {
         <PopupComponentWFields
           open={isOpenUpdate}
           handleClose={() => setIsOpenUpdate(false)}
-          title="Update User"
+          title="Update Account"
           userDetails={userDetails}
           button1Name="Cancel"
           button2Name="Update"

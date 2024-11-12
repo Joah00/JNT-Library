@@ -23,29 +23,95 @@ function ViewBooks() {
 
   const columns = [
     { id: 'id', label: 'ID' },
-    { id: 'bookName', label: 'Book Name' },
+    { id: 'bookTitle', label: 'Book Title' },
     { id: 'author', label: 'Author'},
-    { id: 'quantityLeft', label: 'Quantity Left' },
-    { id: 'action', label: 'Action' },
+    { id: 'type', label: 'Type' },
+    { id: 'language', label: 'Language' },
+    { id: 'availableQuantity', label: 'Available Quantity' },
   ];
   
   const initialData = [
-    { id: 1, author: 'Alice Johnson', bookName: '001', bookName: 'The Great Gatsby', quantityLeft: '10/10', dateAndTime: '2023-10-25 14:30:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 2, author: 'Bob Smith', bookName: '002', bookName: '1984', quantityLeft: '10/10', dateAndTime: '2023-10-26 09:00:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 3, author: 'Clara Oswald', bookName: '003', bookName: 'To Kill a Mockingbird', quantityLeft: '10/10', dateAndTime: '2023-10-27 16:45:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 4, author: 'David Tennant', bookName: '004', bookName: 'Pride and Prejudice', quantityLeft: '10/10', dateAndTime: '2023-10-30 10:00:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 5, author: 'Ella Fitzgerald', bookName: '005', bookName: 'The Catcher in the Rye', quantityLeft: '10/10', dateAndTime: '2023-11-01 15:45:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 6, author: 'Frank Sinatra', bookName: '006', bookName: 'Les Misérables', quantityLeft: '10/10', dateAndTime: '2023-11-02 11:00:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 7, author: 'Grace Hopper', bookName: '007', bookName: 'Brave New World', quantityLeft: '10/10', dateAndTime: '2023-11-03 12:00:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 8, author: 'Helen Mirren', bookName: '008', bookName: 'Slaughterhouse Five', quantityLeft: '10/10', dateAndTime: '2023-11-04 14:30:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 9, author: 'Ian McKellen', bookName: '009', bookName: '1984', quantityLeft: '10/10', dateAndTime: '2023-11-05 15:00:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 10, author: 'Judy Dench', bookName: '010', bookName: 'Don Quixote', quantityLeft: '10/10', dateAndTime: '2023-11-06 16:30:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 11, author: 'Keanu Reeves', bookName: '011', bookName: 'The Brothers Karamazov', quantityLeft: '10/10', dateAndTime: '2023-11-07 17:00:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 12, author: 'Lucy Liu', bookName: '012', bookName: 'The Trial', quantityLeft: '10/10', dateAndTime: '2023-11-08 18:30:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 13, author: 'Morgan Freeman', bookName: '013', bookName: 'Moby Dick', quantityLeft: '10/10', dateAndTime: '2023-11-09 19:00:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 14, author: 'Natalie Portman', bookName: '014', bookName: 'War and Peace', quantityLeft: '10/10', dateAndTime: '2023-11-10 20:00:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] },
-    { id: 15, author: 'Oscar Wilde', bookName: '015', bookName: 'The Picture of Dorian Gray', quantityLeft: '10/10', dateAndTime: '2023-11-11 21:00:00', actions: [<ButtonComponent buttonName="View Book Details"  onClick={handleOpen}/> ] }
-];
+    {
+      id: 1,
+      bookTitle: "To Kill a Mockingbird",
+      author: "Harper Lee",
+      type: "Fiction",
+      language: "English",
+      availableQuantity: 4,
+    },
+    {
+      id: 2,
+      bookTitle: "1984",
+      author: "George Orwell",
+      type: "Dystopian",
+      language: "English",
+      availableQuantity: 2,
+    },
+    {
+      id: 3,
+      bookTitle: "One Hundred Years of Solitude",
+      author: "Gabriel Garcia Marquez",
+      type: "Magical Realism",
+      language: "Spanish",
+      availableQuantity: 5,
+    },
+    {
+      id: 4,
+      bookTitle: "Pride and Prejudice",
+      author: "Jane Austen",
+      type: "Classic",
+      language: "English",
+      availableQuantity: 3,
+    },
+    {
+      id: 5,
+      bookTitle: "The Alchemist",
+      author: "Paulo Coelho",
+      type: "Adventure",
+      language: "Portuguese",
+      availableQuantity: 6,
+    },
+    {
+      id: 6,
+      bookTitle: "Les Misérables",
+      author: "Victor Hugo",
+      type: "Historical Fiction",
+      language: "French",
+      availableQuantity: 1,
+    },
+    {
+      id: 7,
+      bookTitle: "War and Peace",
+      author: "Leo Tolstoy",
+      type: "Historical Fiction",
+      language: "Russian",
+      availableQuantity: 4,
+    },
+    {
+      id: 8,
+      bookTitle: "The Divine Comedy",
+      author: "Dante Alighieri",
+      type: "Epic Poetry",
+      language: "Italian",
+      availableQuantity: 2,
+    },
+    {
+      id: 9,
+      bookTitle: "Don Quixote",
+      author: "Miguel de Cervantes",
+      type: "Classic",
+      language: "Spanish",
+      availableQuantity: 5,
+    },
+    {
+      id: 10,
+      bookTitle: "The Odyssey",
+      author: "Homer",
+      type: "Epic",
+      language: "Greek",
+      availableQuantity: 3,
+    },
+  ];
 
 
   const [filteredData, setFilteredData] = useState(initialData);
@@ -59,7 +125,7 @@ function ViewBooks() {
     const lowercasedValue = value.toLowerCase();
     const filtered = initialData.filter(item => 
       item.id.toString().includes(lowercasedValue) || 
-      item.bookName.toLowerCase().includes(lowercasedValue)
+      item.bookTitle.toLowerCase().includes(lowercasedValue)
     );
     setFilteredData(filtered);
   };

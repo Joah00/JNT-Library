@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import "./TableComponent.css";
 
-function TableComponent({ columns, data }) {
+function TableComponent({ columns, data, marginBottom="auto" }) {
   return (
     <TableContainer
       component={Paper}
@@ -20,7 +20,8 @@ function TableComponent({ columns, data }) {
         marginRight: 2,
         width: "128%",
         maxHeight: 440,
-        overflow: 'auto'
+        overflow: 'auto',
+        marginBottom: {marginBottom}
       }}
     >
       <Table sx={{ minWidth: 500 }} aria-label="simple table">

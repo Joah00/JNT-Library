@@ -13,9 +13,11 @@ function ManageBooks() {
     {
       id: 1,
       bookTitle: "The Great Gatsby",
+      author: "F. Scott Fitzgerald",
       type: "Fiction",
       language: "English",
-      availability: "Available",
+      currentQuantity: 3,
+      totalQuantity: 5,
       actions: [
         <ButtonComponent
           key="update1"
@@ -47,9 +49,11 @@ function ManageBooks() {
     {
       id: 2,
       bookTitle: "1984",
+      author: "George Orwell",
       type: "Dystopian",
       language: "English",
-      availability: "Available",
+      currentQuantity: 2,
+      totalQuantity: 5,
       actions: [
         <ButtonComponent
           key="update2"
@@ -65,7 +69,7 @@ function ManageBooks() {
           }
         />,
         <ButtonComponent
-          key="delete1"
+          key="delete2"
           buttonName="Delete"
           onClick={() =>
             handleOpenDelete({
@@ -80,10 +84,12 @@ function ManageBooks() {
     },
     {
       id: 3,
-      bookTitle: "To Kill a Mockingbird",
-      type: "Novel",
-      language: "English",
-      availability: "Out of Stock",
+      bookTitle: "One Hundred Years of Solitude",
+      author: "Gabriel Garcia Marquez",
+      type: "Magical Realism",
+      language: "Spanish",
+      currentQuantity: 4,
+      totalQuantity: 8,
       actions: [
         <ButtonComponent
           key="update3"
@@ -92,25 +98,34 @@ function ManageBooks() {
           onClick={() =>
             handleOpenUpdate({
               id: 3,
-              bookTitle: "To Kill a Mockingbird",
-              type: "Novel",
-              language: "English",
+              bookTitle: "One Hundred Years of Solitude",
+              type: "Magical Realism",
+              language: "Spanish",
             })
           }
         />,
         <ButtonComponent
           key="delete3"
           buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 3 })}
+          onClick={() =>
+            handleOpenDelete({
+              id: 3,
+              bookTitle: "One Hundred Years of Solitude",
+              type: "Magical Realism",
+              language: "Spanish",
+            })
+          }
         />,
       ],
     },
     {
       id: 4,
       bookTitle: "Pride and Prejudice",
-      type: "Romance",
+      author: "Jane Austen",
+      type: "Classic",
       language: "English",
-      availability: "Available",
+      currentQuantity: 3,
+      totalQuantity: 5,
       actions: [
         <ButtonComponent
           key="update4"
@@ -120,7 +135,7 @@ function ManageBooks() {
             handleOpenUpdate({
               id: 4,
               bookTitle: "Pride and Prejudice",
-              type: "Romance",
+              type: "Classic",
               language: "English",
             })
           }
@@ -128,16 +143,25 @@ function ManageBooks() {
         <ButtonComponent
           key="delete4"
           buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 4 })}
+          onClick={() =>
+            handleOpenDelete({
+              id: 4,
+              bookTitle: "Pride and Prejudice",
+              type: "Classic",
+              language: "English",
+            })
+          }
         />,
       ],
     },
     {
       id: 5,
-      bookTitle: "The Catcher in the Rye",
-      type: "Fiction",
-      language: "English",
-      availability: "Available",
+      bookTitle: "The Alchemist",
+      author: "Paulo Coelho",
+      type: "Adventure",
+      language: "Portuguese",
+      currentQuantity: 6,
+      totalQuantity: 10,
       actions: [
         <ButtonComponent
           key="update5"
@@ -146,290 +170,28 @@ function ManageBooks() {
           onClick={() =>
             handleOpenUpdate({
               id: 5,
-              bookTitle: "The Catcher in the Rye",
-              type: "Fiction",
-              language: "English",
+              bookTitle: "The Alchemist",
+              type: "Adventure",
+              language: "Portuguese",
             })
           }
         />,
         <ButtonComponent
           key="delete5"
           buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 5 })}
-        />,
-      ],
-    },
-    {
-      id: 6,
-      bookTitle: "Les Misérables",
-      type: "Historical Fiction",
-      language: "French",
-      availability: "Out of Stock",
-      actions: [
-        <ButtonComponent
-          key="update6"
-          buttonName="Update"
-          marginRight="7px"
           onClick={() =>
-            handleOpenUpdate({
-              id: 6,
-              bookTitle: "Les Misérables",
-              type: "Historical Fiction",
-              language: "French",
-            })
-          }
-        />,
-        <ButtonComponent
-          key="delete6"
-          buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 6 })}
-        />,
-      ],
-    },
-    {
-      id: 7,
-      bookTitle: "Brave New World",
-      type: "Dystopian",
-      language: "English",
-      availability: "Available",
-      actions: [
-        <ButtonComponent
-          key="update7"
-          buttonName="Update"
-          marginRight="7px"
-          onClick={() =>
-            handleOpenUpdate({
-              id: 7,
-              bookTitle: "Brave New World",
-              type: "Dystopian",
-              language: "English",
-            })
-          }
-        />,
-        <ButtonComponent
-          key="delete7"
-          buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 7 })}
-        />,
-      ],
-    },
-    {
-      id: 8,
-      bookTitle: "Slaughterhouse Five",
-      type: "Science Fiction",
-      language: "English",
-      availability: "Available",
-      actions: [
-        <ButtonComponent
-          key="update8"
-          buttonName="Update"
-          marginRight="7px"
-          onClick={() =>
-            handleOpenUpdate({
-              id: 8,
-              bookTitle: "Slaughterhouse Five",
-              type: "Science Fiction",
-              language: "English",
-            })
-          }
-        />,
-        <ButtonComponent
-          key="delete8"
-          buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 8 })}
-        />,
-      ],
-    },
-    {
-      id: 9,
-      bookTitle: "The Hobbit",
-      type: "Fantasy",
-      language: "English",
-      availability: "Available",
-      actions: [
-        <ButtonComponent
-          key="update9"
-          buttonName="Update"
-          marginRight="7px"
-          onClick={() =>
-            handleOpenUpdate({
-              id: 9,
-              bookTitle: "The Hobbit",
-              type: "Fantasy",
-              language: "English",
-            })
-          }
-        />,
-        <ButtonComponent
-          key="delete9"
-          buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 9 })}
-        />,
-      ],
-    },
-    {
-      id: 10,
-      bookTitle: "Don Quixote",
-      type: "Adventure",
-      language: "Spanish",
-      availability: "Available",
-      actions: [
-        <ButtonComponent
-          key="update10"
-          buttonName="Update"
-          marginRight="7px"
-          onClick={() =>
-            handleOpenUpdate({
-              id: 10,
-              bookTitle: "Don Quixote",
+            handleOpenDelete({
+              id: 5,
+              bookTitle: "The Alchemist",
               type: "Adventure",
-              language: "Spanish",
+              language: "Portuguese",
             })
           }
-        />,
-        <ButtonComponent
-          key="delete10"
-          buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 10 })}
-        />,
-      ],
-    },
-    {
-      id: 11,
-      bookTitle: "The Brothers Karamazov",
-      type: "Philosophical Novel",
-      language: "Russian",
-      availability: "Available",
-      actions: [
-        <ButtonComponent
-          key="update11"
-          buttonName="Update"
-          marginRight="7px"
-          onClick={() =>
-            handleOpenUpdate({
-              id: 11,
-              bookTitle: "The Brothers Karamazov",
-              type: "Philosophical Novel",
-              language: "Russian",
-            })
-          }
-        />,
-        <ButtonComponent
-          key="delete11"
-          buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 11 })}
-        />,
-      ],
-    },
-    {
-      id: 12,
-      bookTitle: "The Trial",
-      type: "Absurdist Fiction",
-      language: "German",
-      availability: "Out of Stock",
-      actions: [
-        <ButtonComponent
-          key="update12"
-          buttonName="Update"
-          marginRight="7px"
-          onClick={() =>
-            handleOpenUpdate({
-              id: 12,
-              bookTitle: "The Trial",
-              type: "Absurdist Fiction",
-              language: "German",
-            })
-          }
-        />,
-        <ButtonComponent
-          key="delete12"
-          buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 12 })}
-        />,
-      ],
-    },
-    {
-      id: 13,
-      bookTitle: "Moby Dick",
-      type: "Adventure",
-      language: "English",
-      availability: "Available",
-      actions: [
-        <ButtonComponent
-          key="update13"
-          buttonName="Update"
-          marginRight="7px"
-          onClick={() =>
-            handleOpenUpdate({
-              id: 13,
-              bookTitle: "Moby Dick",
-              type: "Adventure",
-              language: "English",
-            })
-          }
-        />,
-        <ButtonComponent
-          key="delete13"
-          buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 13 })}
-        />,
-      ],
-    },
-    {
-      id: 14,
-      bookTitle: "War and Peace",
-      type: "Historical Novel",
-      language: "Russian",
-      availability: "Available",
-      actions: [
-        <ButtonComponent
-          key="update14"
-          buttonName="Update"
-          marginRight="7px"
-          onClick={() =>
-            handleOpenUpdate({
-              id: 14,
-              bookTitle: "War and Peace",
-              type: "Historical Novel",
-              language: "Russian",
-            })
-          }
-        />,
-        <ButtonComponent
-          key="delete14"
-          buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 14 })}
-        />,
-      ],
-    },
-    {
-      id: 15,
-      bookTitle: "The Picture of Dorian Gray",
-      type: "Philosophical Novel",
-      language: "English",
-      availability: "Available",
-      actions: [
-        <ButtonComponent
-          key="update15"
-          buttonName="Update"
-          marginRight="7px"
-          onClick={() =>
-            handleOpenUpdate({
-              id: 15,
-              bookTitle: "The Picture of Dorian Gray",
-              type: "Philosophical Novel",
-              language: "English",
-            })
-          }
-        />,
-        <ButtonComponent
-          key="delete15"
-          buttonName="Delete"
-          onClick={() => handleOpenDelete({ id: 15 })}
         />,
       ],
     },
   ]);
+  
   const [isOpenUpdate, setIsOpenUpdate] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -522,9 +284,11 @@ function ManageBooks() {
   const columns = [
     { id: "id", label: "ID" },
     { id: "bookTitle", label: "Book Title" },
+    { id: 'author', label: 'Author'},
     { id: "type", label: "Type" },
     { id: "language", label: "Language" },
-    { id: "availability", label: "Availability" },
+    { id: "currentQuantity", label: "Current Quantity" },
+    { id: "totalQuantity", label: "Total Quantity" },
     { id: "action", label: "Action" },
   ];
 
