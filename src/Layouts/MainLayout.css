@@ -22,15 +22,17 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 9.7%;
+  width: 100%;
+  z-index: 100;
   font-size: 13px;
 }
 
 .content-area {
   margin-left: 125px;
-  max-width: calc(100% - 280px); 
-  max-height: calc(100% - 200px); 
+  max-width: 80%;
+  max-height: auto;
   position: relative;
+  margin-top: 40px;
 }
 
 .Sidebar {
