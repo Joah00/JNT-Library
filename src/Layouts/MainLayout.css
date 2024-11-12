@@ -30,7 +30,7 @@ body {
 .content-area {
   margin-left: 125px;
   max-width: 80%;
-  max-height: auto;
+  min-height: 800px;
   position: relative;
   margin-top: 40px;
 }
