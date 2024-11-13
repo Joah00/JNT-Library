@@ -10,8 +10,37 @@ const LoginPage = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Skipping validation, directly navigating to the View Books page
-    navigate('/viewBooks');
+    
+    // Send login data to the PHP API
+    fetch("http://localhost/jntlibrarydb/login.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // Store user role in local storage
+          localStorage.setItem("userRole", data.role);
+          alert(data.message);
+  
+          // Navigate based on the user's role
+          if (data.role === "ADMIN") {
+            navigate("/manageBooks");
+          } else {
+            navigate("/viewBooks");
+          }
+        } else {
+          // Show error message if login fails
+          alert(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again.");
+      });
   };
 
   const handleForgotPassword = () => {

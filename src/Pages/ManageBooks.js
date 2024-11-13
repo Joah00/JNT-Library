@@ -348,7 +348,8 @@ function ManageBooks() {
           { id: "bookTitle", label: "Book Title" },
           { id: "type", label: "Type" },
           { id: "language", label: "Language" },
-          { id: "availability", label: "Availability" },
+          { id: "currentQuantity", label: "Current Quantity" },
+          { id: "totalQuantity", label: "Total Quantity" },
         ]}
         button1Name="Cancel"
         button2Name="Update"

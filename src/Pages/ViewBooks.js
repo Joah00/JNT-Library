@@ -2,24 +2,10 @@ import React, { useState } from "react";
 import MainLayout from "../Layouts/MainLayout";
 import SearchBar from "../Components/SearchBar";
 import TableComponent from '../Components/TableComponent';
-import ButtonComponent from '../Components/ButtonComponent';
-import PopupComponent from "../Components/PopupComponent";
-import SnackbarComponent from "../Components/SnackbarComponent";
 import "./ViewBooks.css";
 
 function ViewBooks() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-  const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
-  const handleSnackbarOpen = () => setSnackbarOpen(true);
-  const handleSnackbarClose = () => setSnackbarOpen(false);
-
-  const handleNotify = () => {
-    handleClose();
-    handleSnackbarOpen();
-  };
+ 
 
   const columns = [
     { id: 'id', label: 'ID' },
@@ -134,17 +120,6 @@ function ViewBooks() {
     <MainLayout header="View Books">
         <SearchBar placeholder="Search by ID" onChange={handleSearchChange}/>
         <TableComponent columns={columns} data={filteredData}/> 
-        <PopupComponent open={isOpen} handleClose={handleClose} title="Book Details">
-          <div className="popup-container">
-            <p>"Do you wish to notify this user for overdue borrowing?"</p>
-            <ButtonComponent buttonName="Confirm" buttonWidth="auto" onClick={handleNotify} marginRight="center"/>
-          </div>
-        </PopupComponent>
-        <SnackbarComponent 
-          open={snackbarOpen} 
-          handleClose={handleSnackbarClose} 
-          message="Notification sent successfully" 
-        />
     </MainLayout>
   );
 }
