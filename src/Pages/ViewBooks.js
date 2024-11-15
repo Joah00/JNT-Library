@@ -1,116 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import MainLayout from "../Layouts/MainLayout";
 import SearchBar from "../Components/SearchBar";
 import TableComponent from '../Components/TableComponent';
 import "./ViewBooks.css";
 
 function ViewBooks() {
- 
+  const navigate = useNavigate();
+  const [books, setBooks] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
-  const columns = [
-    { id: 'id', label: 'ID' },
-    { id: 'bookTitle', label: 'Book Title' },
-    { id: 'author', label: 'Author'},
-    { id: 'type', label: 'Type' },
-    { id: 'language', label: 'Language' },
-    { id: 'availableQuantity', label: 'Available Quantity' },
-  ];
-  
-  const initialData = [
-    {
-      id: 1,
-      bookTitle: "To Kill a Mockingbird",
-      author: "Harper Lee",
-      type: "Fiction",
-      language: "English",
-      availableQuantity: 4,
-    },
-    {
-      id: 2,
-      bookTitle: "1984",
-      author: "George Orwell",
-      type: "Dystopian",
-      language: "English",
-      availableQuantity: 2,
-    },
-    {
-      id: 3,
-      bookTitle: "One Hundred Years of Solitude",
-      author: "Gabriel Garcia Marquez",
-      type: "Magical Realism",
-      language: "Spanish",
-      availableQuantity: 5,
-    },
-    {
-      id: 4,
-      bookTitle: "Pride and Prejudice",
-      author: "Jane Austen",
-      type: "Classic",
-      language: "English",
-      availableQuantity: 3,
-    },
-    {
-      id: 5,
-      bookTitle: "The Alchemist",
-      author: "Paulo Coelho",
-      type: "Adventure",
-      language: "Portuguese",
-      availableQuantity: 6,
-    },
-    {
-      id: 6,
-      bookTitle: "Les Misérables",
-      author: "Victor Hugo",
-      type: "Historical Fiction",
-      language: "French",
-      availableQuantity: 1,
-    },
-    {
-      id: 7,
-      bookTitle: "War and Peace",
-      author: "Leo Tolstoy",
-      type: "Historical Fiction",
-      language: "Russian",
-      availableQuantity: 4,
-    },
-    {
-      id: 8,
-      bookTitle: "The Divine Comedy",
-      author: "Dante Alighieri",
-      type: "Epic Poetry",
-      language: "Italian",
-      availableQuantity: 2,
-    },
-    {
-      id: 9,
-      bookTitle: "Don Quixote",
-      author: "Miguel de Cervantes",
-      type: "Classic",
-      language: "Spanish",
-      availableQuantity: 5,
-    },
-    {
-      id: 10,
-      bookTitle: "The Odyssey",
-      author: "Homer",
-      type: "Epic",
-      language: "Greek",
-      availableQuantity: 3,
-    },
-  ];
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // Get the token from localStorage
 
+    // Redirect to login if token is missing
+    if (!token) {
+      console.error("No token found, redirecting to login.");
+      navigate("/loginPage");
+      return;
+    }
 
-  const [filteredData, setFilteredData] = useState(initialData);
+    // Fetch books if token is available
+    fetch("http://localhost/jntlibrarydb/ViewBook.php", {
+      headers: {
+        "Authorization": `Bearer ${token}`, // Include token in Authorization header
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setBooks(data.data);
+          setFilteredData(data.data);
+        } else {
+          console.error("Error fetching books:", data.message);
+        }
+      })
+      .catch((error) => console.error("Error fetching books:", error));
+  }, [navigate]);
 
   const handleSearchChange = (event) => {
     const value = event.target.value;
-    filterData(value);
-  };
-
-  const filterData = (value) => {
     const lowercasedValue = value.toLowerCase();
-    const filtered = initialData.filter(item => 
-      item.id.toString().includes(lowercasedValue) || 
+    const filtered = books.filter((item) =>
+      item.id.toString().includes(lowercasedValue) ||
       item.bookTitle.toLowerCase().includes(lowercasedValue)
     );
     setFilteredData(filtered);
@@ -118,8 +51,15 @@ function ViewBooks() {
 
   return (
     <MainLayout header="View Books">
-        <SearchBar placeholder="Search by ID" onChange={handleSearchChange}/>
-        <TableComponent columns={columns} data={filteredData}/> 
+      <SearchBar placeholder="Search by ID" onChange={handleSearchChange} />
+      <TableComponent columns={[
+        { id: 'id', label: 'ID' },
+        { id: 'bookTitle', label: 'Book Title' },
+        { id: 'author', label: 'Author' },
+        { id: 'type', label: 'Type' },
+        { id: 'language', label: 'Language' },
+        { id: 'availableQuantity', label: 'Available Quantity' },
+      ]} data={filteredData} />
     </MainLayout>
   );
 }

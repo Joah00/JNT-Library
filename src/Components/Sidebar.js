@@ -1,30 +1,58 @@
-// Sidebar.js
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { SidebarData } from "./SidebarData";
 import "./Sidebar.css";
-import { SidebarData } from "./SidebarData"; 
 
 function Sidebar() {
-  const [updateToggle, setUpdateToggle] = useState(false);
+  const navigate = useNavigate();
   const role = localStorage.getItem("userRole");
 
-  const handleClick = () => {
-    setUpdateToggle(!updateToggle);
-  };
+  const handleLogout = () => {
+    // Trigger a logout request to the server using token-based authentication
+    fetch("http://localhost/jntlibrarydb/logout.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}` // Include the token in the Authorization header
+        },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        if (data.success) {
+            localStorage.removeItem("token"); // Clear the token on successful logout
+            localStorage.removeItem("userRole"); // Optionally clear the user role
+            navigate("/loginPage"); // Redirect to login page
+        } else {
+            console.error("Logout failed:", data.message);
+        }
+    })
+    .catch((error) => console.error("Error during logout:", error));
+};
 
   return (
     <div className="Sidebar">
       <ul className="SidebarList">
-        {SidebarData[role].map((val, key) => (
+        {SidebarData[role]?.map((val, key) => (
           <li
             key={key}
-            className={window.location.pathname === val.link ? "row active" : "row"}
-            onClick={handleClick} 
+            className="row"
+            onClick={val.title === "Logout" ? handleLogout : undefined}
           >
-            <Link to={val.link} className="SidebarItem" onClick={handleClick}>
-              <div id="icon">{val.icon}</div>
-              <div id="title">{val.title}</div>
-            </Link>
+            {val.title === "Logout" ? (
+              <div
+                className="SidebarItem"
+                style={{ cursor: "pointer" }}
+                onClick={handleLogout}
+              >
+                <div id="icon">{val.icon}</div>
+                <div id="title">{val.title}</div>
+              </div>
+            ) : (
+              <a href={val.link} className="SidebarItem">
+                <div id="icon">{val.icon}</div>
+                <div id="title">{val.title}</div>
+              </a>
+            )}
           </li>
         ))}
       </ul>

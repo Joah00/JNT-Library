@@ -15,7 +15,7 @@ function ManageBorrowedBooks() {
   const [bookDetails, setBookDetails] = useState({});
   const [username, setUsername] = useState("");
   const [books, setBooks] = useState([
-    { bookName: "", author: "", quantity: 1 },
+    { bookID: "", quantity: 1 },
   ]);
 
   const handleOpen = (details) => {
@@ -55,104 +55,7 @@ function ManageBorrowedBooks() {
     { id: "action", label: "Action" },
   ];
 
-  const initialData = [
-    {
-      id: 1,
-      name: "Alice Johnson",
-      userID: "001",
-      bookName: "The Great Gatsby",
-      dueDate: "2023-11-01",
-      actions: [
-        <ButtonComponent
-          buttonName="View Book Details"
-          onClick={() =>
-            handleOpen({
-              bookName: "The Great Gatsby",
-              language: "English",
-              type: "Fiction",
-            })
-          }
-        />,
-      ],
-    },
-    {
-      id: 2,
-      name: "Bob Smith",
-      userID: "002",
-      bookName: "1984",
-      dueDate: "2023-11-05",
-      actions: [
-        <ButtonComponent
-          buttonName="View Book Details"
-          onClick={() =>
-            handleOpen({
-              bookName: "1984",
-              language: "English",
-              type: "Dystopian",
-            })
-          }
-        />,
-      ],
-    },
-    {
-      id: 3,
-      name: "Clara Oswald",
-      userID: "003",
-      bookName: "To Kill a Mockingbird",
-      dueDate: "2023-11-08",
-      actions: [
-        <ButtonComponent
-          buttonName="View Book Details"
-          onClick={() =>
-            handleOpen({
-              bookName: "To Kill a Mockingbird",
-              language: "English",
-              type: "Fiction",
-            })
-          }
-        />,
-      ],
-    },
-    {
-      id: 4,
-      name: "David Tennant",
-      userID: "004",
-      bookName: "Pride and Prejudice",
-      dueDate: "2023-11-10",
-      actions: [
-        <ButtonComponent
-          buttonName="View Book Details"
-          onClick={() =>
-            handleOpen({
-              bookName: "Pride and Prejudice",
-              language: "English",
-              type: "Romance",
-            })
-          }
-        />,
-      ],
-    },
-    {
-      id: 5,
-      name: "Ella Fitzgerald",
-      userID: "005",
-      amount: "$30.00",
-      bookName: "The Catcher in the Rye",
-      dueDate: "2023-11-12",
-      actions: [
-        <ButtonComponent
-          buttonName="View Book Details"
-          onClick={() =>
-            handleOpen({
-              bookName: "The Catcher in the Rye",
-              language: "English",
-              type: "Fiction",
-            })
-          }
-        />,
-      ],
-    },
-  ];
+  const initialData = [];
 
   const [filteredData, setFilteredData] = useState(initialData);
 
@@ -171,12 +74,53 @@ function ManageBorrowedBooks() {
     setFilteredData(filtered);
   };
 
-  const handleReturnBook = () => {
-    // Placeholder for handling the return book functionality
+  const handleReturnBook = (borrowedHistoryID) => {
+    fetch("http://localhost/jntlibrarydb/ManageBorrowedBooks.php?action=returnBook", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ borrowedHistoryID }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert("Book returned successfully!");
+          // Refresh the data or clear fields as needed
+        } else {
+          alert("Failed to return book: " + data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
-  const handleBorrowBook = () => {
-    // Placeholder for handling the borrow book functionality
+  const handleBorrowBook = (username, bookID, quantity) => {
+    // Ensure these are simple data types or plain objects
+    const payload = {
+      username, // Expected to be a number or string
+      bookID, // Expected to be a number or string
+      quantity, // Expected to be a number
+    };
+
+    fetch("http://localhost/jntlibrarydb/ManageBorrowedBooks.php?action=borrowBook", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload), // Now using a clean, serializable object
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert("Book borrowed successfully!");
+          // Optionally refresh data here
+        } else {
+          alert("Failed to borrow book: " + data.message);
+        }
+      })
+      .catch((error) => console.error("Error:", error));
   };
 
   const handleClearFields = () => {
@@ -224,23 +168,15 @@ function ManageBorrowedBooks() {
             marginTop="10px"
           >
             <TextField
-              label="Book Name"
+              label="Book ID"
               variant="outlined"
               fullWidth
-              value={book.bookName}
+              value={book.bookID}
               onChange={(e) =>
-                handleBookChange(index, "bookName", e.target.value)
+                handleBookChange(index, "bookID", e.target.value)
               }
             />
-            <TextField
-              label="Author"
-              variant="outlined"
-              fullWidth
-              value={book.author}
-              onChange={(e) =>
-                handleBookChange(index, "author", e.target.value)
-              }
-            />
+
             <TextField
               label="Quantity"
               type="number"
@@ -268,11 +204,7 @@ function ManageBorrowedBooks() {
             </IconButton>
           </Box>
         ))}
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          marginTop="15px"
-        >
+        <Box display="flex" justifyContent="flex-end" marginTop="15px">
           <ButtonComponent
             buttonName="Return Book"
             buttonWidth="200px"
@@ -285,7 +217,7 @@ function ManageBorrowedBooks() {
             buttonWidth="200px"
             buttonHeight="50px"
             marginRight="10px"
-            onClick={handleBorrowBook}
+            onClick={() => books.forEach(book => handleBorrowBook(username, book.bookID, book.quantity))}
           />
           <ButtonComponent
             buttonName="Clear"
@@ -297,7 +229,7 @@ function ManageBorrowedBooks() {
       </Box>
 
       <SearchBar placeholder="Search by ID" onChange={handleSearchChange} />
-      <TableComponent columns={columns} data={filteredData}/>
+      <TableComponent columns={columns} data={filteredData} />
       <PopupComponent
         open={isOpen}
         handleClose={handleClose}

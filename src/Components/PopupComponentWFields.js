@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { TextField, Dialog, DialogActions, DialogContent, DialogTitle, Autocomplete  } from "@mui/material";
 import ButtonComponent from "./ButtonComponent";
 
 function PopupComponentWFields({
   open,
   handleClose,
   title,
-  userDetails,  // Use the appropriate prop name based on the data
+  userDetails,  
   button1Name,
   button2Name,
   button2OnClick,
-  fields = []  // Default to an empty array if not provided
+  fields = []  
 }) {
   const [updatedDetails, setUpdatedDetails] = useState(userDetails || {});
 
@@ -26,22 +26,47 @@ function PopupComponentWFields({
     }));
   };
 
+  const handleRoleChange = (event, newValue) => {
+    setUpdatedDetails(prevDetails => ({
+      ...prevDetails,
+      role: newValue  
+    }));
+  };
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         {fields.map(field => (
-          <TextField
-            key={field.id}
-            margin="dense"
-            id={field.id}
-            label={field.label}
-            type="text"
-            fullWidth
-            variant="outlined"
-            value={updatedDetails[field.id] || ''}
-            onChange={(e) => handleInputChange(e, field.id)}
-          />
+          field.id === "role" ? (
+            <Autocomplete
+              key={field.id}
+              options={["ADMIN", "USER"]}
+              value={updatedDetails.role || ""}
+              onChange={handleRoleChange}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  margin="dense"
+                  label="Role"
+                  variant="outlined"
+                  fullWidth
+                />
+              )}
+            />
+          ) : (
+            <TextField
+              key={field.id}
+              margin="dense"
+              id={field.id}
+              label={field.label}
+              type="text"
+              fullWidth
+              variant="outlined"
+              value={updatedDetails[field.id] || ''}
+              onChange={(e) => handleInputChange(e, field.id)}
+            />
+          )
         ))}
       </DialogContent>
       <DialogActions>
