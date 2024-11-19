@@ -6,15 +6,25 @@ import {
   Typography,
   Box,
   Link,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+  FormControl,
+  InputLabel
 } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import SideBar from "../Components/Sidebar";
 import "./LoginPage.css";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); // Initialize the navigate function
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = (e) => e.preventDefault();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -29,9 +39,9 @@ const LoginPage = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to fetch"); 
+          throw new Error("Failed to fetch");
         }
-        return response.json(); 
+        return response.json();
       })
       .then((data) => {
         if (data.success && data.token) {
@@ -41,7 +51,7 @@ const LoginPage = () => {
 
           // Navigate to the appropriate page
           if (data.role === "ADMIN") {
-            console.log(localStorage.getItem('token'));
+            console.log(localStorage.getItem("token"));
             navigate("/manageBooks");
           } else {
             navigate("/viewBooks");
@@ -55,10 +65,6 @@ const LoginPage = () => {
         console.error("Error:", error);
         alert("An error occurred. Please try again.");
       });
-  };
-
-  const handleForgotPassword = () => {
-    alert("Forgot Password functionality goes here.");
   };
 
   return (
@@ -101,16 +107,35 @@ const LoginPage = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <TextField
-            label="Password"
-            type="password"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <FormControl fullWidth margin="normal" variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              label="Password" // Link label with the OutlinedInput
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={
+                      showPassword
+                        ? "hide the password"
+                        : "display the password"
+                    }
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          ;
           <Button
             type="submit"
             variant="contained"
@@ -124,16 +149,6 @@ const LoginPage = () => {
           >
             Login
           </Button>
-          <Box textAlign="center" marginTop="1rem">
-            <Link
-              href="#"
-              onClick={handleForgotPassword}
-              underline="hover"
-              style={{ color: "#555", fontSize: "0.9rem" }}
-            >
-              Forgot Password?
-            </Link>
-          </Box>
         </form>
       </Box>
     </Container>

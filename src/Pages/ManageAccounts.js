@@ -70,15 +70,14 @@ function ManageAccounts() {
 
   const handleOpenUpdate = (id) => {
     const user = users.find((user) => parseInt(user.id, 10) === parseInt(id, 10));
-        if (user) {
+    
+    if (user) {
       setUserDetails({
         id: user.id,
         username: user.username,
         role: user.role,
       });
       setIsOpenUpdate(true);
-    } else {
-      alert("No user found with ID:", id);
     }
   };
   
@@ -245,15 +244,14 @@ function ManageAccounts() {
           button2OnClick={handleAddNewUser}
           fields={[
             { id: "username", label: "Username" },
-            { id: "password", label: "Password" },
+            { id: "password", label: "Password", password: true },
             { id: "role", label: "Role" },
           ]}
         />
 
         <PopupComponentWFields
-          open={isOpenUpdate} // This should be true to show the popup
+          open={isOpenUpdate} 
           handleClose={() => {
-            console.log("Closing update popup"); // Debugging log
             setIsOpenUpdate(false);
           }}
           title="Update Account"
@@ -263,7 +261,7 @@ function ManageAccounts() {
           button2OnClick={handleUpdateUser}
           fields={[
             { id: "username", label: "Username" },
-            { id: "password", label: "Password" },
+            { id: "password", label: "Password", password: true },
             { id: "role", label: "Role" },
           ]}
         />
