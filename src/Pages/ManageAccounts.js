@@ -15,10 +15,9 @@ function ManageAccounts() {
     { id: "action", label: "Action" },
   ];
 
-  const initialUsers = [];
 
-  const [users, setUsers] = useState(initialUsers);
-  const [filteredUsers, setFilteredUsers] = useState(initialUsers);
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [userDetails, setUserDetails] = useState({});
   const [isOpenAdd, setIsOpenAdd] = useState(false);
   const [isOpenUpdate, setIsOpenUpdate] = useState(false);
@@ -26,32 +25,7 @@ function ManageAccounts() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const handleOpenUpdate = (id) => {
-    console.log("Attempting to open update for user ID:", id);
-    const user = users.find((user) => user.id === id);
-    if (user) {
-      setUserDetails({
-        id: user.id,
-        username: user.username,
-        role: user.role,
-      });
-      setIsOpenUpdate(true);
-      console.log("Update modal opened for user:", user);
-    } else {
-      console.log("No user found with ID:", id);
-    }
-};
-
-
-  const handleOpenDelete = (id) => {
-    const user = users.find((user) => user.id === id);
-    if (user) {
-      setUserDetails({ id: user.id });
-      setIsOpenDelete(true);
-    }
-  };
-
-  useEffect(() => {
+  const fetchUsers = () => {
     const token = localStorage.getItem("token");
   
     fetch("http://localhost/jntlibrarydb/ManageAccounts.php", {
@@ -64,17 +38,16 @@ function ManageAccounts() {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          console.log("Fetched users:", data.data);
           const usersWithActions = data.data.map((user) => ({
             id: parseInt(user.id, 10),
             username: user.username,
             role: user.role,
-            key: user.id, 
+            key: user.id,
             actions: [
               <ButtonComponent
                 key={`update-${user.id}`}
                 buttonName="Update"
-                maringRight="5px"
+                marginRight="5px"
                 onClick={() => handleOpenUpdate(user.id)}
               />,
               <ButtonComponent
@@ -89,9 +62,35 @@ function ManageAccounts() {
         }
       })
       .catch((error) => console.error("Error fetching accounts:", error));
-  }, []);
-    
+  };
 
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleOpenUpdate = (id) => {
+    const user = users.find((user) => parseInt(user.id, 10) === parseInt(id, 10));
+        if (user) {
+      setUserDetails({
+        id: user.id,
+        username: user.username,
+        role: user.role,
+      });
+      setIsOpenUpdate(true);
+    } else {
+      alert("No user found with ID:", id);
+    }
+  };
+  
+
+  const handleOpenDelete = (id) => {
+    const user = users.find((user) => parseInt(user.id, 10) === parseInt(id, 10));
+    if (user) {
+      setUserDetails({ id: user.id });
+      setIsOpenDelete(true);
+    }
+  };
+    
   const handleSnackbarOpen = (message) => {
     setSnackbarMessage(message);
     setSnackbarOpen(true);
@@ -179,8 +178,6 @@ function ManageAccounts() {
     setFilteredUsers(filtered);
   };
 
-   
-
   const handleOpenAddUser = () => {
     setUserDetails({
       id: users.length + 1,
@@ -210,8 +207,8 @@ function ManageAccounts() {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          // Fetch updated data or update state with the new user
           handleSnackbarOpen("User added successfully");
+          fetchUsers();
         } else {
           console.error("Failed to add user:", data.message);
         }

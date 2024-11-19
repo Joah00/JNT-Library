@@ -19,19 +19,18 @@ function ManageBooks() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   // Fetch books from the API on component load
-  useEffect(() => {
+  const fetchBooks = () => {
     const token = localStorage.getItem("token");
   
     fetch("http://localhost/jntlibrarydb/ManageBooks.php?action=getBooks", {
       headers: {
-        "Authorization": `Bearer ${token}`, 
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          console.log(data.data);
           const booksData = data.data.map((book) => ({
             ...book,
             actions: [
@@ -53,13 +52,16 @@ function ManageBooks() {
         }
       })
       .catch((error) => console.error("Error fetching books:", error));
+  };
+  
+  // Call fetchBooks in useEffect
+  useEffect(() => {
+    fetchBooks();
   }, []);
 
   const handleOpenAddBook = () => {
     setIsOpenAdd(true);
   };
-
- 
 
   const handleOpenUpdate = (details) => {
     setBookDetails(details);
@@ -77,6 +79,14 @@ function ManageBooks() {
   };
 
   const handleSnackbarClose = () => setSnackbarOpen(false);
+
+  const validateQuantity = (currentQuantity, totalQuantity) => {
+    if (parseInt(currentQuantity, 10) > parseInt(totalQuantity, 10)) {
+      alert("Total Quantity cannot be less than current quantity!");
+      return false;
+    }
+    return true;
+  }
 
   const columns = [
     { id: "id", label: "ID" },
@@ -99,8 +109,11 @@ function ManageBooks() {
   };
 
   const handleAddNewBook = (newBookDetails) => {
+    if (!validateQuantity(newBookDetails.currentQuantity, newBookDetails.totalQuantity)) {
+      return;
+    }
     const token = localStorage.getItem("token");
-  
+    
     fetch("http://localhost/jntlibrarydb/ManageBooks.php?action=addBook", {
       method: "POST",
       headers: {
@@ -112,26 +125,9 @@ function ManageBooks() {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          const newBook = {
-            ...newBookDetails,
-            id: data.id,
-            actions: [
-              <ButtonComponent
-                key={`update${data.id}`}
-                buttonName="Update"
-                onClick={() => handleOpenUpdate(newBookDetails)}
-              />,
-              <ButtonComponent
-                key={`delete${data.id}`}
-                buttonName="Delete"
-                onClick={() => handleOpenDelete(newBookDetails)}
-              />,
-            ],
-          };
-          setBooks((currentBooks) => [...currentBooks, newBook]);
-          setFilteredData((currentFiltered) => [...currentFiltered, newBook]);
-          setIsOpenAdd(false);
           handleSnackbarOpen("New book added successfully");
+          fetchBooks(); // Call the existing function to refresh the books list
+          setIsOpenAdd(false); // Close the Add dialog
         } else {
           handleSnackbarOpen(data.message || "Failed to add book.");
         }
@@ -140,8 +136,11 @@ function ManageBooks() {
   };
   
   const handleUpdateBook = (updatedDetails) => {
+    if (!validateQuantity(updatedDetails.currentQuantity, updatedDetails.totalQuantity)) {
+      return; 
+    }
+
     const token = localStorage.getItem("token");
-  
     fetch("http://localhost/jntlibrarydb/ManageBooks.php?action=updateBook", {
       method: "POST",
       headers: {

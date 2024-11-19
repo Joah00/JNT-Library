@@ -87,12 +87,12 @@ if ($conn->connect_error) {
 function getAccounts($conn) {
     $sql = "SELECT ID AS id, username, role FROM Account"; 
     $result = $conn->query($sql);
-
     $accounts = [];
     if ($result && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $accounts[] = $row;
         }
+        error_log(print_r($accounts, true));
         echo json_encode(["success" => true, "data" => $accounts]);
     } else {
         echo json_encode(["success" => false, "message" => "No accounts found."]);

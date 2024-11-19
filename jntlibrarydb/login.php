@@ -30,7 +30,17 @@ $email = $data['email'];
 $password = $data['password'];
 
 // Secret key for JWT
-$secret_key = "YourAESKeyHere"; // Replace with a strong, secure key
+$secret_key = "YourAESKeyHere";
+$method = $_SERVER['REQUEST_METHOD'];
+define('SECRET_KEY', 'YourAESKeyHere');
+define('AES_METHOD', 'AES-256-CBC');
+
+function decryptData($encryptedData) {
+    $key = hash('sha256', SECRET_KEY);
+    $iv = substr(hash('sha256', SECRET_KEY), 0, 16); // Initialization vector for AES
+    $decrypted = openssl_decrypt(base64_decode($encryptedData), AES_METHOD, $key, 0, $iv);
+    return $decrypted;
+}
 
 // Validate user credentials
 $sql = "SELECT ID, username, password, role FROM Account WHERE username = ?";
@@ -51,14 +61,8 @@ if (!isset($user['ID'])) {
     exit();
 }
 
-$encrypted_password = $user['password'];
-$hexadecimal = bin2hex($encrypted_password);
-$decrypted_password_query = "SELECT CAST(AES_DECRYPT(UNHEX(?), 'YourAESKeyHere') AS CHAR) AS decrypted_password";
-$dec_stmt = $conn->prepare($decrypted_password_query);
-$dec_stmt->bind_param("s", $hexadecimal);
-$dec_stmt->execute();
-$dec_result = $dec_stmt->get_result();
-$decrypted_password = $dec_result->fetch_assoc()['decrypted_password'];
+$encrypted_password = $user['password']; 
+$decrypted_password = decryptData($encrypted_password);
 
 if ($password !== $decrypted_password) {
     echo json_encode(["success" => false, "message" => "Incorrect username or password."]);

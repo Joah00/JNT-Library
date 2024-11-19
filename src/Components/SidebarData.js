@@ -1,5 +1,3 @@
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import BackHandIcon from '@mui/icons-material/BackHand';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import PageviewIcon from '@mui/icons-material/Pageview';
@@ -19,7 +17,6 @@ import React from 'react';
     ],
     USER: [
       { title: "View Books", link: "/viewBooks", icon: <PageviewIcon/> },
-      { title: "Borrowed Books", link: "/borrowedBooks", icon: <AutoStoriesIcon/> },
       {
         title: "Logout",
         icon: <LogoutIcon/>,
